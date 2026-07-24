@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Grace Studio — Pestañas y Uñas Increíbles. Tu estudio de belleza de alta gama.">
+    <meta name="theme-color" content="#080808">
+    <title>Grace Studio — Pestañas y Uñas Increíbles</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #080808;
+            --bg-elevated: #0F0F0F;
+            --bg-card: #131313;
+            --bg-card-hover: #191919;
+            --bg-input: #1A1A1A;
+            --border: #1E1E1E;
+            --border-hover: #2A2A2A;
+            --text-primary: #F0F0F0;
+            --text-secondary: #8A8A8A;
+            --text-muted: #505050;
+            --red: #D32F2F;
+            --red-light: #EF5350;
+            --red-dark: #B71C1C;
+            --red-glow: rgba(211, 47, 47, 0.15);
+            --red-surface: rgba(211, 47, 47, 0.08);
+            --red-surface-high: rgba(211, 47, 47, 0.14);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.6);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+            --shadow-red: 0 4px 20px rgba(211, 47, 47, 0.25);
+            --radius-sm: 14px;
+            --radius-md: 18px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --radius-full: 9999px;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --bottom-nav-h: 72px;
+            --top-bar-h: 60px;
+            --fem-accent: rgba(211, 47, 47, 0.04);
+            --fem-line: rgba(211, 47, 47, 0.08);
+        }
+
+        [data-theme="light"] {
+            --bg: #FFF5F5;
+            --bg-elevated: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #FFF0F0;
+            --bg-input: #FCE8E8;
+            --border: #F0D0D0;
+            --border-hover: #E8B8B8;
+            --text-primary: #2D1515;
+            --text-secondary: #7A5050;
+            --text-muted: #B08888;
+            --red: #C62828;
+            --red-light: #D32F2F;
+            --red-dark: #B71C1C;
+            --red-glow: rgba(198, 40, 40, 0.1);
+            --red-surface: rgba(198, 40, 40, 0.05);
+            --red-surface-high: rgba(198, 40, 40, 0.1);
+            --shadow-sm: 0 1px 4px rgba(150, 80, 80, 0.08);
+            --shadow-md: 0 4px 16px rgba(150, 80, 80, 0.1);
+            --shadow-lg: 0 8px 32px rgba(150, 80, 80, 0.12);
+            --shadow-red: 0 4px 20px rgba(198, 40, 40, 0.18);
+            --fem-accent: rgba(198, 40, 40, 0.03);
+            --fem-line: rgba(198, 40, 40, 0.1);
+        }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overscroll-behavior: none; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { display: block; max-width: 100%; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+
+        /* ============================================
+           FONDO ANIMADO
+           ============================================ */
+        .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
+        .bg-fx::before {
+            content: ''; position: absolute; inset: -40%; width: 180%; height: 180%;
+            background:
+                radial-gradient(ellipse 55% 50% at 20% 15%, var(--red-glow) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 55% at 80% 85%, var(--red-glow) 0%, transparent 70%),
+                radial-gradient(ellipse 80% 40% at 50% 50%, var(--fem-accent) 0%, transparent 80%);
+            animation: meshFloat 30s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        .bg-fx::after {
+            content: ''; position: absolute; inset: -40%; width: 180%; height: 180%;
+            background:
+                radial-gradient(ellipse 30% 40% at 70% 25%, var(--fem-accent) 0%, transparent 60%),
+                radial-gradient(ellipse 25% 35% at 30% 75%, var(--red-glow) 0%, transparent 60%);
+            animation: meshFloat2 38s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        @keyframes meshFloat {
+            0% { transform: translate(0,0) rotate(0deg) scale(1); }
+            33% { transform: translate(3%,2%) rotate(1.5deg) scale(1.02); }
+            66% { transform: translate(-2%,4%) rotate(-1deg) scale(0.98); }
+            100% { transform: translate(4%,1%) rotate(2deg) scale(1.01); }
+        }
+        @keyframes meshFloat2 {
+            0% { transform: translate(0,0) rotate(0deg); }
+            50% { transform: translate(-3%,-3%) rotate(-2deg); }
+            100% { transform: translate(2%,-4%) rotate(1.5deg); }
+        }
+
+        .bg-orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; will-change: transform, opacity; }
+        .bg-orb--1 { width: 350px; height: 350px; top: -120px; right: -80px; background: var(--red); opacity: 0.05; animation: orbDrift1 22s ease-in-out infinite; }
+        .bg-orb--2 { width: 280px; height: 280px; bottom: -100px; left: -60px; background: var(--red-dark); opacity: 0.04; animation: orbDrift2 28s ease-in-out infinite; }
+        .bg-orb--3 { width: 200px; height: 200px; top: 45%; left: 60%; background: var(--red); opacity: 0.03; animation: orbDrift3 24s ease-in-out infinite; }
+
+        @keyframes orbDrift1 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.05; } 25% { transform: translate(-30px,25px) scale(1.1); opacity: 0.08; } 50% { transform: translate(-15px,45px) scale(0.95); opacity: 0.04; } 75% { transform: translate(-40px,15px) scale(1.05); opacity: 0.07; } }
+        @keyframes orbDrift2 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.04; } 30% { transform: translate(35px,-30px) scale(1.08); opacity: 0.07; } 60% { transform: translate(20px,-50px) scale(0.92); opacity: 0.03; } }
+        @keyframes orbDrift3 { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.03; } 40% { transform: translate(-20px,30px) scale(1.12); opacity: 0.06; } 70% { transform: translate(10px,-15px) scale(0.9); opacity: 0.02; } }
+
+        .bg-lines { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .bg-lines span { position: absolute; width: 1px; height: 140%; top: -20%; background: linear-gradient(to bottom, transparent 0%, var(--fem-line) 30%, var(--fem-line) 50%, var(--fem-line) 70%, transparent 100%); animation: lineSwing 20s ease-in-out infinite; }
+        .bg-lines span:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 24s; }
+        .bg-lines span:nth-child(2) { left: 35%; animation-delay: -8s; animation-duration: 20s; opacity: 0.6; }
+        .bg-lines span:nth-child(3) { left: 65%; animation-delay: -14s; animation-duration: 27s; opacity: 0.4; }
+        .bg-lines span:nth-child(4) { left: 88%; animation-delay: -4s; animation-duration: 22s; opacity: 0.5; }
+
+        @keyframes lineSwing { 0%,100% { transform: translateX(-5px) rotate(1deg); opacity: 0.2; } 25% { transform: translateX(6px) rotate(-0.8deg); opacity: 0.6; } 50% { transform: translateX(-3px) rotate(0.5deg); opacity: 0.25; } 75% { transform: translateX(4px) rotate(-1.2deg); opacity: 0.7; } }
+
+        .bg-particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .bg-particles i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--red); opacity: 0; animation: particleUp linear infinite; font-style: normal; }
+        .bg-particles i:nth-child(1) { left: 8%; animation-duration: 18s; animation-delay: 0s; bottom: -5%; }
+        .bg-particles i:nth-child(2) { left: 24%; animation-duration: 24s; animation-delay: -6s; bottom: -5%; width: 1.5px; height: 1.5px; }
+        .bg-particles i:nth-child(3) { left: 42%; animation-duration: 20s; animation-delay: -10s; bottom: -5%; }
+        .bg-particles i:nth-child(4) { left: 58%; animation-duration: 26s; animation-delay: -3s; bottom: -5%; width: 1px; height: 1px; }
+        .bg-particles i:nth-child(5) { left: 73%; animation-duration: 22s; animation-delay: -12s; bottom: -5%; }
+        .bg-particles i:nth-child(6) { left: 90%; animation-duration: 28s; animation-delay: -8s; bottom: -5%; width: 1.5px; height: 1.5px; }
+
+        @keyframes particleUp { 0% { transform: translateY(0) translateX(0); opacity: 0; } 8% { opacity: 0.5; } 50% { transform: translateY(-55vh) translateX(10px); opacity: 0.25; } 92% { opacity: 0.08; } 100% { transform: translateY(-115vh) translateX(-8px); opacity: 0; } }
+
+        [data-theme="light"] .bg-orb--1 { opacity: 0.03; }
+        [data-theme="light"] .bg-orb--2 { opacity: 0.025; }
+        [data-theme="light"] .bg-orb--3 { opacity: 0.02; }
+        [data-theme="light"] .bg-particles i { opacity: 0 !important; }
+
+        /* Detalles femeninos */
+        .fem-line { width: 40px; height: 2px; background: linear-gradient(90deg, transparent, var(--red), transparent); border-radius: 2px; margin: 0 auto; }
+        .fem-separator { height: 1px; background: linear-gradient(90deg, transparent, var(--fem-line), transparent); margin: 0 16px; }
+
+        /* APP */
+        .app { position: relative; z-index: 1; }
+
+        /* TOP BAR */
+        .topbar {
+            position: sticky; top: 0; z-index: 50; height: var(--top-bar-h); padding: 0 16px;
+            background: var(--bg-elevated); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .topbar__left { display: flex; align-items: center; gap: 12px; }
+
+        .topbar__logo {
+            font-family: var(--font-display); font-style: italic; font-weight: 500;
+            font-size: 1.3rem; color: var(--text-primary); letter-spacing: 0.04em;
+            transition: color 0.4s ease;
+        }
+
+        .topbar__logo em { font-style: normal; color: var(--red); }
+
+        .topbar__right { display: flex; align-items: center; gap: 2px; }
+
+        .icon-btn { width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; transition: background 0.2s ease; }
+        .icon-btn:active { background: var(--red-surface); }
+        .icon-btn svg { width: 20px; height: 20px; stroke: var(--text-secondary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.4s ease; }
+
+        .theme-toggle { position: relative; overflow: hidden; }
+        .theme-toggle__icon { position: absolute; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; }
+        .theme-toggle__icon--sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+        .theme-toggle__icon--moon { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .theme-toggle__icon--sun { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .theme-toggle__icon--moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+
+        /* DRAWER */
+        .drawer-overlay { position: fixed; inset: 0; z-index: 90; background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+        .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+        [data-theme="light"] .drawer-overlay { background: rgba(45, 21, 21, 0.25); }
+
+        .drawer {
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 95; width: 310px; max-width: 82vw;
+            background: rgba(15, 15, 15, 0.72); backdrop-filter: blur(40px) saturate(1.6); -webkit-backdrop-filter: blur(40px) saturate(1.6);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+
+        [data-theme="light"] .drawer { background: rgba(255, 255, 255, 0.7); border-right: 1px solid rgba(240, 208, 208, 0.5); }
+        .drawer.open { transform: translateX(0); }
+
+        .drawer__header { padding: 22px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; }
+        [data-theme="light"] .drawer__header { border-bottom-color: rgba(198,40,40,0.08); }
+
+        .drawer__brand { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.2rem; letter-spacing: 0.04em; color: var(--text-primary); transition: color 0.4s ease; }
+        .drawer__brand em { font-style: normal; color: var(--red); }
+
+        .drawer__close { width: 36px; height: 36px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; transition: background 0.2s ease; }
+        .drawer__close:active { background: var(--red-surface); }
+        .drawer__close svg { width: 20px; height: 20px; stroke: var(--text-secondary); fill: none; stroke-width: 2; stroke-linecap: round; transition: stroke 0.4s ease; }
+
+        .drawer__nav { padding: 10px 10px; flex: 1; }
+        .drawer__section-title { font-family: var(--font-display); font-style: italic; font-size: 0.78rem; font-weight: 500; color: var(--red); letter-spacing: 0.1em; padding: 14px 14px 8px; opacity: 0.85; }
+        .drawer__link { display: flex; align-items: center; gap: 14px; padding: 13px 14px; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 400; color: var(--text-secondary); transition: all 0.2s ease; }
+        .drawer__link:active, .drawer__link:hover { background: var(--red-surface); color: var(--red-light); }
+        .drawer__link svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .drawer__link--red { color: var(--red); font-weight: 600; }
+
+        .drawer__footer { padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+        [data-theme="light"] .drawer__footer { border-top-color: rgba(198,40,40,0.08); }
+        .drawer__footer-text { font-size: 0.7rem; color: var(--text-muted); line-height: 1.7; transition: color 0.4s ease; }
+        .drawer__footer-text a { color: var(--text-secondary); }
+
+        /* HERO */
+        .hero { padding: 28px 20px 36px; text-align: center; }
+
+        .hero__tag { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: var(--red-surface); border: 1px solid rgba(211,47,47,0.12); border-radius: var(--radius-full); font-family: var(--font-display); font-style: italic; font-size: 0.8rem; font-weight: 500; color: var(--red-light); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; animation: fadeUp 0.6s ease-out both; }
+        .hero__tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 2.5s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.6); } }
+
+        .hero__title { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: clamp(2.4rem, 9vw, 3.8rem); line-height: 1.08; color: var(--text-primary); margin-bottom: 8px; animation: fadeUp 0.6s 0.1s ease-out both; transition: color 0.4s ease; }
+        .hero__title span { color: var(--red); }
+
+        .hero__fem-line { margin: 16px auto 16px; animation: fadeUp 0.6s 0.15s ease-out both; }
+
+        .hero__sub { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 1.15rem; color: var(--text-secondary); max-width: 360px; margin: 0 auto 28px; line-height: 1.8; animation: fadeUp 0.6s 0.2s ease-out both; transition: color 0.4s ease; }
+
+        .hero__cta { animation: fadeUp 0.6s 0.3s ease-out both; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 38px; background: var(--red); color: #fff; font-family: var(--font-display); font-style: italic; font-size: 1.05rem; font-weight: 500; letter-spacing: 0.06em; border-radius: var(--radius-full); box-shadow: var(--shadow-red); transition: all 0.25s ease; }
+        .btn-primary:active { transform: scale(0.96); box-shadow: var(--shadow-md); }
+        .btn-primary svg { width: 20px; height: 20px; fill: #fff; }
+
+        /* SECTION HEAD */
+        .sec-head { display: flex; align-items: baseline; justify-content: space-between; padding: 30px 20px 14px; }
+        .sec-head__title { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.45rem; color: var(--text-primary); transition: color 0.4s ease; }
+        .sec-head__action { font-family: var(--font-display); font-style: italic; font-size: 0.88rem; font-weight: 500; color: var(--red); padding: 6px 14px; border-radius: var(--radius-full); transition: background 0.2s ease; }
+        .sec-head__action:active { background: var(--red-surface); }
+
+        /* SERVICE CARDS */
+        .services-list { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 14px; }
+
+        .svc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s ease, background 0.4s ease, border-color 0.4s ease; position: relative; }
+        .svc-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--red), transparent); opacity: 0; transition: opacity 0.35s ease; }
+        .svc-card:active::before { opacity: 1; }
+        .svc-card:active { transform: scale(0.985); background: var(--bg-card-hover); }
+
+        .svc-card__img { height: 180px; overflow: hidden; position: relative; background: var(--bg-input); }
+        .svc-card__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .svc-card:active .svc-card__img img { transform: scale(1.04); }
+
+        .svc-card__pill { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 5px 12px; border-radius: var(--radius-full); font-family: var(--font-display); font-style: italic; font-size: 0.72rem; font-weight: 500; color: #fff; letter-spacing: 0.04em; }
+        [data-theme="light"] .svc-card__pill { background: rgba(255,255,255,0.85); color: var(--red-dark); }
+
+        .svc-card__body { padding: 16px 18px 20px; }
+        .svc-card__name { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: 1.35rem; color: var(--text-primary); margin-bottom: 4px; transition: color 0.4s ease; }
+        .svc-card__desc { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.65; transition: color 0.4s ease; }
+        .svc-card__bottom { display: flex; align-items: center; justify-content: space-between; }
+        .svc-card__price { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--red); }
+        .svc-card__price small { font-family: var(--font-body); font-weight: 300; font-size: 0.8rem; color: var(--text-muted); }
+        .svc-card__book { padding: 10px 22px; background: var(--red-surface-high); color: var(--red-light); font-family: var(--font-display); font-style: italic; font-size: 0.85rem; font-weight: 500; border-radius: var(--radius-full); transition: all 0.2s ease; }
+        .svc-card__book:active { background: var(--red); color: #fff; }
+
+        /* GALERÍA */
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 0 16px 16px; }
+        .gallery-grid__item { position: relative; overflow: hidden; border-radius: 8px; background: var(--bg-input); transition: background 0.4s ease; }
+        .gallery-grid__item:nth-child(1) { grid-column: span 2; aspect-ratio: 4/3; }
+        .gallery-grid__item:nth-child(2) { aspect-ratio: 3/4; }
+        .gallery-grid__item:nth-child(3) { aspect-ratio: 3/4; }
+        .gallery-grid__item:nth-child(4) { grid-column: span 2; aspect-ratio: 4/3; }
+        .gallery-grid__item:nth-child(5) { aspect-ratio: 1/1; }
+        .gallery-grid__item:nth-child(6) { aspect-ratio: 1/1; }
+        .gallery-grid__item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease, opacity 0.4s ease; opacity: 0.9; }
+        .gallery-grid__item:active img { transform: scale(1.06); opacity: 1; }
+
+        /* UBICACIÓN */
+        .loc-card { margin: 0 16px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; display: flex; gap: 14px; align-items: center; transition: all 0.25s ease, background 0.4s ease, border-color 0.4s ease; }
+        .loc-card:active { transform: scale(0.98); background: var(--bg-card-hover); }
+        .loc-card__icon { width: 50px; height: 50px; border-radius: var(--radius-md); background: var(--red-surface-high); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .loc-card__icon svg { width: 22px; height: 22px; stroke: var(--red); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .loc-card__info { flex: 1; min-width: 0; }
+        .loc-card__name { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.05rem; color: var(--text-primary); margin-bottom: 2px; transition: color 0.4s ease; }
+        .loc-card__addr { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 0.85rem; color: var(--text-muted); transition: color 0.4s ease; }
+        .loc-card__arrow svg { width: 20px; height: 20px; stroke: var(--text-muted); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.4s ease; }
+
+        /* CTA */
+        .cta-banner { margin: 8px 16px 16px; background: linear-gradient(135deg, var(--red-surface-high) 0%, var(--red-surface) 100%); border: 1px solid rgba(211,47,47,0.12); border-radius: var(--radius-xl); padding: 34px 24px; text-align: center; position: relative; overflow: hidden; transition: background 0.4s ease, border-color 0.4s ease; }
+        .cta-banner::before { content: ''; position: absolute; top: -50px; right: -50px; width: 160px; height: 160px; border-radius: 50%; background: var(--red-glow); filter: blur(50px); }
+        .cta-banner__title { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: 1.6rem; color: var(--text-primary); margin-bottom: 8px; position: relative; transition: color 0.4s ease; }
+        .cta-banner__text { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 24px; position: relative; transition: color 0.4s ease; }
+
+        /* FOOTER */
+        .foot { padding: 24px 20px calc(var(--bottom-nav-h) + var(--safe-bottom) + 24px); text-align: center; }
+        .foot__socials { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
+        .foot__social { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: all 0.25s ease, background 0.4s ease, border-color 0.4s ease; }
+        .foot__social:active { background: var(--red-surface); border-color: var(--red); transform: scale(0.9); }
+        .foot__social svg { width: 18px; height: 18px; fill: var(--text-secondary); transition: fill 0.4s ease; }
+        .foot__sep { margin: 0 auto 16px; }
+        .foot__copy { font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: 0.76rem; color: var(--text-muted); line-height: 1.9; transition: color 0.4s ease; }
+        .foot__copy a { color: var(--text-secondary); }
+
+        /* BOTTOM NAV */
+        .bottomnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; height: calc(var(--bottom-nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-elevated); border-top: 1px solid var(--border); transition: all 0.4s ease; }
+        .bottomnav__row { display: flex; align-items: center; justify-content: space-around; height: var(--bottom-nav-h); }
+
+        .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; min-width: 56px; transition: all 0.25s ease; position: relative; }
+        .bnav-item::before { content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); width: 0; height: 2.5px; background: var(--red); border-radius: 0 0 3px 3px; transition: width 0.3s ease; }
+        .bnav-item--active::before { width: 28px; }
+        .bnav-item svg { width: 22px; height: 22px; stroke: var(--text-muted); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: all 0.25s ease; }
+        .bnav-item--active svg { stroke: var(--red); }
+        .bnav-item__label { font-family: var(--font-display); font-style: italic; font-size: 0.65rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.02em; transition: color 0.25s ease; }
+        .bnav-item--active .bnav-item__label { color: var(--red); }
+
+        /* ============================================
+           FAB WHATSAPP SIEMPRE VISIBLE
+           ============================================ */
+        .fab {
+            position: fixed;
+            bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 22px);
+            right: 18px; z-index: 100;
+            width: 58px; height: 58px;
+            border-radius: 50%;
+            background: var(--red);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-red), 0 0 0 0 rgba(211, 47, 47, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fabPulse 3s ease-in-out infinite;
+        }
+
+        .fab:active { transform: scale(0.88); animation: none; }
+
+        .fab svg { width: 28px; height: 28px; fill: #fff; }
+
+        @keyframes fabPulse {
+            0%, 100% { box-shadow: var(--shadow-red), 0 0 0 0 rgba(211, 47, 47, 0.3); }
+            50% { box-shadow: var(--shadow-red), 0 0 0 10px rgba(211, 47, 47, 0); }
+        }
+
+        /* REVEAL */
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+        .reveal.vis { opacity: 1; transform: translateY(0); }
+
+        /* RESPONSIVE */
+        @media (min-width: 640px) {
+            body { display: flex; justify-content: center; background: #030303; }
+            [data-theme="light"] body { background: #F0E0E0; }
+            .app { width: 100%; max-width: 440px; min-height: 100vh; background: var(--bg); border-left: 1px solid var(--border); border-right: 1px solid var(--border); box-shadow: 0 0 100px rgba(0,0,0,0.4); position: relative; transition: background 0.4s ease, border-color 0.4s ease; }
+            .bottomnav { left: 50%; transform: translateX(-50%); max-width: 440px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+            .fab { right: calc(50% - 202px); }
+            .drawer-overlay { max-width: 440px; left: 50%; transform: translateX(-50%); }
+        }
+
+        @media (min-width: 1024px) {
+            .app { max-width: 460px; }
+            .bottomnav { max-width: 460px; }
+            .fab { right: calc(50% - 212px); }
+            .drawer-overlay { max-width: 460px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.05ms !important; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo animado -->
+    <div class="bg-fx" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
+    <div class="bg-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="bg-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <!-- Drawer overlay -->
+    <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+    <!-- Drawer -->
+    <nav class="drawer" id="drawer" role="dialog" aria-label="Menú de servicios">
+        <div class="drawer__header">
+            <span class="drawer__brand">Grace <em>Studio</em></span>
+            <button class="drawer__close" id="drawerClose" aria-label="Cerrar menú">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="drawer__nav">
+            <p class="drawer__section-title">Inicio</p>
+            <a href="#hero" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Inicio
+            </a>
+            <p class="drawer__section-title">Pestañas</p>
+            <a href="#svc-clasicas" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                Extensiones Clásicas
+            </a>
+            <a href="#svc-hibridas" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                Híbridas
+            </a>
+            <a href="#svc-volumen" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                Volumen Ruso
+            </a>
+            <a href="#svc-lifting" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                Lifting de Pestañas
+            </a>
+            <p class="drawer__section-title">Uñas</p>
+            <a href="#svc-semi" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M12 6v12"/></svg>
+                Esmaltado Semipermanente
+            </a>
+            <a href="#svc-gel" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M12 6v12"/></svg>
+                Gel Sculpt
+            </a>
+            <a href="#svc-nailart" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M12 6v12"/></svg>
+                Nail Art Personalizado
+            </a>
+            <a href="#svc-spa" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M12 6v12"/></svg>
+                Manicura Spa
+            </a>
+            <p class="drawer__section-title">Más</p>
+            <a href="#galeria" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Galería
+            </a>
+            <a href="#ubicacion" class="drawer__link" data-drawer-link>
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Ubicación
+            </a>
+            <a href="https://wa.me" class="drawer__link drawer__link--red" style="margin-top:12px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                Agendar mi Cita
+            </a>
+        </div>
+        <div class="drawer__footer">
+            <p class="drawer__footer-text">
+                &copy; 2026 Grace Studio. Todos los derechos reservados.<br>
+                <a href="https://infinitecsolutions.github.io/web/" target="_blank" rel="noopener noreferrer">InfiniteC Solutions</a>
+            </p>
+        </div>
+    </nav>
+
+    <!-- APP -->
+    <div class="app">
+
+        <header class="topbar" id="topbar">
+            <div class="topbar__left">
+                <button class="icon-btn" id="menuBtn" aria-label="Abrir menú">
+                    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <span class="topbar__logo">Grace <em>Studio</em></span>
+            </div>
+            <div class="topbar__right">
+                <button class="icon-btn theme-toggle" id="themeBtn" aria-label="Cambiar tema">
+                    <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                    <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero" id="hero">
+            <div class="hero__tag">
+                <span class="hero__tag-dot"></span>
+                Estudio de Belleza
+            </div>
+            <h1 class="hero__title">Pestañas y Uñas <span>Increíbles</span></h1>
+            <div class="hero__fem-line fem-line" aria-hidden="true"></div>
+            <p class="hero__sub">Resultados que hablan por sí solos. Técnicas de vanguardia y materiales premium para ti.</p>
+            <div class="hero__cta">
+                <a href="https://wa.me" class="btn-primary">
+                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Agendar mi Cita
+                </a>
+            </div>
+        </section>
+
+        <div class="sec-head reveal"><h2 class="sec-head__title">Servicios de Pestañas</h2></div>
+        <div class="services-list">
+            <article class="svc-card reveal" id="svc-clasicas">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=360&fit=crop&q=80" alt="Extensiones clásicas" loading="lazy" width="600" height="360">
+                    <span class="svc-card__pill">Más pedido</span>
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Extensiones Clásicas</h3>
+                    <p class="svc-card__desc">Una pestaña por cada pestaña natural. Elegancia, definición y un look completamente natural.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$450 <small>· 1.5 hrs</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+            <article class="svc-card reveal" id="svc-hibridas">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1560869713-7d0a29430803?w=600&h=360&fit=crop&q=80" alt="Pestañas híbridas" loading="lazy" width="600" height="360">
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Híbridas</h3>
+                    <p class="svc-card__desc">Mezcla de clásicas y volumen. Textura dimensionada con más cuerpo sin perder naturalidad.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$580 <small>· 2 hrs</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+            <article class="svc-card reveal" id="svc-volumen">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=600&h=360&fit=crop&q=80" alt="Volumen ruso" loading="lazy" width="600" height="360">
+                    <span class="svc-card__pill">Premium</span>
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Volumen Ruso</h3>
+                    <p class="svc-card__desc">Fans ultrafinos para máxima densidad. Impacto dramático, look de revista.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$750 <small>· 2.5 hrs</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+            <article class="svc-card reveal" id="svc-lifting">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&h=360&fit=crop&q=80" alt="Lifting de pestañas" loading="lazy" width="600" height="360">
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Lifting de Pestañas</h3>
+                    <p class="svc-card__desc">Curva perfecta sin extensiones. Perfila y levanta tu pestaña natural al instante.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$380 <small>· 1 hr</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="sec-head reveal"><h2 class="sec-head__title">Servicios de Uñas</h2></div>
+        <div class="services-list">
+            <article class="svc-card reveal" id="svc-semi">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=360&fit=crop&q=80" alt="Esmaltado semipermanente" loading="lazy" width="600" height="360">
+                    <span class="svc-card__pill">Popular</span>
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Esmaltado Semipermanente</h3>
+                    <p class="svc-card__desc">Brillo intenso y larga duración. Color perfecto sin maltratar tu uña natural.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$250 <small>· 1 hr</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+            <article class="svc-card reveal" id="svc-gel">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&h=360&fit=crop&q=80" alt="Gel sculpt" loading="lazy" width="600" height="360">
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Gel Sculpt</h3>
+                    <p class="svc-card__desc">Construcción perfecta con forma personalizada. Uñas largas, fuertes y naturales.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$550 <small>· 2 hrs</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+            <article class="svc-card reveal" id="svc-nailart">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600&h=360&fit=crop&q=80" alt="Nail art personalizado" loading="lazy" width="600" height="360">
+                    <span class="svc-card__pill">Exclusivo</span>
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Nail Art Personalizado</h3>
+                    <p class="svc-card__desc">Diseños únicos por encargo. Cada uña es una obra de arte hecha a mano.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">Desde $650 <small>· 2.5 hrs</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+            <article class="svc-card reveal" id="svc-spa">
+                <div class="svc-card__img">
+                    <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=360&fit=crop&q=80" alt="Manicura spa" loading="lazy" width="600" height="360">
+                </div>
+                <div class="svc-card__body">
+                    <h3 class="svc-card__name">Manicura Spa</h3>
+                    <p class="svc-card__desc">Tratamiento integral con hidratación profunda, exfoliación y massage relajante.</p>
+                    <div class="svc-card__bottom">
+                        <span class="svc-card__price">$350 <small>· 1.5 hrs</small></span>
+                        <a href="https://wa.me" class="svc-card__book">Agendar</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="sec-head reveal" id="galeria"><h2 class="sec-head__title">Nuestros Trabajos</h2></div>
+        <div class="gallery-grid reveal">
+            <div class="gallery-grid__item"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=450&fit=crop&q=80" alt="Clásicas" loading="lazy" width="600" height="450"></div>
+            <div class="gallery-grid__item"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&h=400&fit=crop&q=80" alt="Semipermanente" loading="lazy" width="300" height="400"></div>
+            <div class="gallery-grid__item"><img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=300&h=400&fit=crop&q=80" alt="Volumen ruso" loading="lazy" width="300" height="400"></div>
+            <div class="gallery-grid__item"><img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=600&h=450&fit=crop&q=80" alt="Nail art" loading="lazy" width="600" height="450"></div>
+            <div class="gallery-grid__item"><img src="https://images.unsplash.com/photo-1560869713-7d0a29430803?w=300&h=300&fit=crop&q=80" alt="Híbridas" loading="lazy" width="300" height="300"></div>
+            <div class="gallery-grid__item"><img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=300&h=300&fit=crop&q=80" alt="Gel sculpt" loading="lazy" width="300" height="300"></div>
+        </div>
+
+        <div class="fem-separator reveal" aria-hidden="true"></div>
+
+        <div class="sec-head reveal" id="ubicacion"><h2 class="sec-head__title">Ubicación</h2></div>
+        <a href="https://maps.app.goo.gl/EbN58ctY3nPz7Si67" target="_blank" rel="noopener noreferrer" class="loc-card reveal" aria-label="Ver ubicación en Google Maps">
+            <div class="loc-card__icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="loc-card__info">
+                <p class="loc-card__name">Grace Studio</p>
+                <p class="loc-card__addr">Ver Ubicación en Maps</p>
+            </div>
+            <div class="loc-card__arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+
+        <div class="cta-banner reveal">
+            <h2 class="cta-banner__title">¿Lista para brillar?</h2>
+            <p class="cta-banner__text">Agenda tu cita en segundos y vive la experiencia Grace Studio</p>
+            <a href="https://wa.me" class="btn-primary">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Agendar mi Cita
+            </a>
+        </div>
+
+        <footer class="foot">
+            <div class="foot__socials">
+                <a href="#" class="foot__social" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="#" class="foot__social" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.73a8.19 8.19 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.16z"/></svg>
+                </a>
+            </div>
+            <div class="fem-line foot__sep" aria-hidden="true"></div>
+            <p class="foot__copy">
+                &copy; 2026 Grace Studio. Todos los derechos reservados.<br>
+                Diseñado por <a href="https://infinitecsolutions.github.io/web/" target="_blank" rel="noopener noreferrer">InfiniteC Solutions</a>
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- FAB SIEMPRE VISIBLE -->
+    <a href="https://wa.me" class="fab" id="fab" aria-label="Agendar mi Cita por WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottomnav" aria-label="Navegación principal">
+        <div class="bottomnav__row">
+            <a href="#hero" class="bnav-item bnav-item--active" data-bnav="home">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span class="bnav-item__label">Inicio</span>
+            </a>
+            <button class="bnav-item" id="bnavMenu" data-bnav="menu">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span class="bnav-item__label">Servicios</span>
+            </button>
+            <a href="#galeria" class="bnav-item" data-bnav="gallery">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span class="bnav-item__label">Galería</span>
+            </a>
+            <a href="https://wa.me" class="bnav-item" data-bnav="contact">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                <span class="bnav-item__label">Cita</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        (function() {
+            'use strict';
+
+            var menuBtn = document.getElementById('menuBtn');
+            var bnavMenu = document.getElementById('bnavMenu');
+            var drawer = document.getElementById('drawer');
+            var drawerOverlay = document.getElementById('drawerOverlay');
+            var drawerClose = document.getElementById('drawerClose');
+            var drawerLinks = document.querySelectorAll('[data-drawer-link]');
+            var themeBtn = document.getElementById('themeBtn');
+            var bnavItems = document.querySelectorAll('.bnav-item[data-bnav]');
+
+            /* Drawer */
+            function openDrawer() { drawer.classList.add('open'); drawerOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+            function closeDrawer() { drawer.classList.remove('open'); drawerOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+            menuBtn.addEventListener('click', openDrawer);
+            bnavMenu.addEventListener('click', openDrawer);
+            drawerClose.addEventListener('click', closeDrawer);
+            drawerOverlay.addEventListener('click', closeDrawer);
+            drawerLinks.forEach(function(l) { l.addEventListener('click', closeDrawer); });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+            /* Tema */
+            var currentTheme = localStorage.getItem('grace-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            themeBtn.addEventListener('click', function() {
+                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', currentTheme);
+                localStorage.setItem('grace-theme', currentTheme);
+                var meta = document.querySelector('meta[name="theme-color"]');
+                if (meta) meta.content = currentTheme === 'dark' ? '#080808' : '#FFF5F5';
+            });
+
+            /* Bottom nav activo */
+            var zones = [
+                { el: document.getElementById('hero'), key: 'home' },
+                { el: document.getElementById('svc-clasicas'), key: 'menu' },
+                { el: document.getElementById('galeria'), key: 'gallery' }
+            ];
+
+            if ('IntersectionObserver' in window) {
+                var bObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(e) {
+                        if (e.isIntersecting) {
+                            var k = e.target._bk;
+                            bnavItems.forEach(function(i) { i.classList.toggle('bnav-item--active', i.getAttribute('data-bnav') === k); });
+                        }
+                    });
+                }, { threshold: 0.3, rootMargin: '-50px 0px -45% 0px' });
+                zones.forEach(function(z) { if (z.el) { z.el._bk = z.key; bObs.observe(z.el); } });
+            }
+
+            /* Reveal */
+            var reveals = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                var rObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('vis'); rObs.unobserve(e.target); } });
+                }, { threshold: 0.06 });
+                reveals.forEach(function(el) { rObs.observe(el); });
+            } else { reveals.forEach(function(el) { el.classList.add('vis'); }); }
+
+        })();
+    </script>
+
+</body>
+</html>
